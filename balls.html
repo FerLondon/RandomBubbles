@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<body>
+<title>Lucas balls game</title>
+
+<style>
+  .balls {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: fixed;
+  }
+</style>
+
+<script>
+
+var detalhes = {
+  max_comp: document.body.offsetWidth, // comprimento máximo
+  max_alt: window.outerHeight, // altura máxima 
+  quantity: 100, // quantidade de bolas
+  bolas: []
+}
+
+function criarBolas() {
+  for (var i = 0; i < detalhes.quantity; i++) {
+    let comprimento = pegaComprimento(detalhes.max_comp) + "px";
+    let altura = pegaAltura(detalhes.max_alt) + "px";
+    let cor = pegaCor();
+    
+    let bolas = {
+      width: parseInt(comprimento),
+      height: parseInt(altura),
+      color: cor
+    };
+    
+    // Checa se as bolas sobrepoe
+    if (sobrePor(bolas)) {
+      i--;
+      continue;
+    }
+    
+    detalhes.bolas.push(bolas);
+    
+    // Cria as bolas e adiciona ao corpo
+    document.body.innerHTML += `<div class="balls" style="left:${bolas.width}px; top:${bolas.height}px; background:${bolas.color};"></div>`;
+  }
+}
+
+// Função random pega width
+function pegaComprimento(v) {
+  let total = v - 100; // Considerando tamanho da bola
+  return Math.floor(Math.random() * total);
+}
+
+// Função random pega height
+function pegaAltura(v) {
+  let total = v - 100; // Considerando tamanho da bola
+  return Math.floor(Math.random() * total);
+}
+
+// Seleciona as cores com um random
+function pegaCor() {
+  let cores = ["#00f7c0","#d10a88","#39118b","#178c00","#fdd000", "#d54b08","#35bc71","#f73232","#f0ea82","#08cf78","#a900ef", "#f7cbca"];
+  let contaCores = cores.length;
+  let selecionaCor = Math.floor(Math.random() * contaCores);
+  return cores[selecionaCor];
+}
+
+function sobrePor(bolaNova) {
+  for (let bolas of detalhes.bolas) {
+    let distancia = Math.sqrt(Math.pow(bolaNova.width - bolas.width, 2) + Math.pow(bolaNova.height - bolas.height, 2));
+    if (distancia < 50) { 
+      return true;
+    }
+  }
+  return false;
+}
+
+criarBolas();
+</script>
+
+</body>
+</html>
